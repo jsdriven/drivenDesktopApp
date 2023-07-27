@@ -6,9 +6,6 @@ class CreatePostView(customtkinter.CTkFrame):
         super().__init__(parent)
         self.text = customtkinter.CTkLabel(self, text="CreatePostView")
         self.text.pack()
-        self.bind('<Expose>', logging.info("Expose"))
-        self.bind('<FocuseIn>', logging.info("FocusIn"))
-        self.bind('<Destroy>', logging.info("Destroy"))
 
     
     def onLoad():
