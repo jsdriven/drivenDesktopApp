@@ -27,6 +27,42 @@ class App(customtkinter.CTk):
 
     def button_callback(self):
         print("Button pressed")
+        
+
+class AppV2(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+        #App Frame
+        screen_width, screen_height = 900,900        
+        screen_width, screen_height = self.winfo_screenwidth()-10, self.winfo_screenheight()-100
+        logging.info('ScreenDimensions: %dx%d+0+0' % (screen_width, screen_height))
+        self.geometry("%dx%d+0+0" % (screen_width, screen_height))
+        self.title("DriveDev Home")   
+        logging.info("Creating main View")
+        self.mainview = MainView(
+            master=self,
+            pages=[
+                {"tabName":"Create Post","viewName":"CreatePostView"},
+                {"tabName":"List Posts","viewName":"ListPostsView"}]) 
+        self.mainview.pack(fill="both", expand=True, padx=10,pady=10) 
+
+class MainView(customtkinter.CTkTabview):    
+    def __init__(self,master,pages):        
+        super().__init__(master) 
+        #self.bind("<Expose>", logging.info("Tabchanges"))
+        for page in pages:
+            logging.info(page.get("tabName"))
+            logging.info(page.get("viewName"))
+            logging.info(eval(page.get("viewName")))
+            currentTab = self.add(page.get("tabName"))
+            tabView = eval(page.get("viewName"))(currentTab)
+            #Something needs to be added below to add a function for when
+            #tab is loaded.
+            #currentTab.command = tabView.onLoad
+            logging.info(currentTab)
+            currentTab.main = tabView
+            currentTab.main.pack(fill="both", expand=True)
+            logging.info(currentTab)
 
 
 #Run app
