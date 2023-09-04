@@ -46,14 +46,25 @@ class App(customtkinter.CTk):
         
         #Bind each event for switching between tabs
         #Note it may be worth creating an event manager object for this as well
-        self.bind("<<CreatePostView>>", lambda event:self.testMethod(event,"CreatePost"))
-        self.bind("<<ListPostsView>>", lambda event:self.testMethod(event,"ListPosts"))
+        self.bind("<<CreatePostView>>", lambda event:self.SwitchTabEvent(event,"CreatePost"))
+        self.bind("<<ListPostsView>>", lambda event:self.SwitchTabEvent(event,"ListPosts"))
         
     #Switches between frames by compating against the active tab
-    def testMethod(self,event,tabToOpen):
+    def SwitchTabEvent(self,event,tabToOpen):
         logging.info("Event was emitted")
         logging.info("SwitchingTabs to %s" % tabToOpen)
+        self.SwitchTab(tabToOpen)
+    
+    
+    def EditPost(self,post):
+        self.SwitchTab("CreatePost",postToEdit=post)
+    
+    def SwitchTab(self,tabToOpen,postToEdit=None):
+        logging.info("Printing post to edit")
+        logging.info(postToEdit)
         if self.activeTab != tabToOpen:
+            if tabToOpen == "CreatePost":
+                self.mainframe.CreatePost.setPost(postToEdit)
             if self.activeTab != "NONE":
                 logging.info("Hiding current Tab %s" % self.activeTab)
                 getattr(self.mainframe,self.activeTab).grid_remove()
