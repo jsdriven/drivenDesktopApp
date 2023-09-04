@@ -1,0 +1,1 @@
+pyinstaller.exe --onefile --icon=jsico.png --name=DrivenDesktop .\main.py
