@@ -7,5 +7,6 @@ class PostUpdate(BaseModel):
         content: Optional[str] = None
         description: Optional[str] = None 
         tags: Optional[List[str]] = None
+        recommendLink: Optional[str] = None
         
         

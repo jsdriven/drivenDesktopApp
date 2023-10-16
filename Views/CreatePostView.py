@@ -20,7 +20,7 @@ class CreatePostView(customtkinter.CTkFrame):
         #self.bind('<Visibility>',lambda event:self.onLoad(event=event))
         
         #Grid Configuration 
-        self.rowconfigure([0,1,2,4],weight=1)
+        self.rowconfigure([0,1,2,4,5],weight=1)
         self.rowconfigure(3,weight=10)
         self.columnconfigure([0,1,2,3,4],weight=1)
         
@@ -53,6 +53,12 @@ class CreatePostView(customtkinter.CTkFrame):
         self.EditButton = customtkinter.CTkButton(self,text="Edit",command=self.EditPost)
         self.CreateButton = customtkinter.CTkButton(self,text="Create",command=self.CreatePost)
         
+        #ReccomendLink Input
+        self.RecommendLabel = customtkinter.CTkLabel(self, text="RecommendLink")
+        self.RecomendEntry = customtkinter.CTkEntry(self)
+        self.RecommendLabel.grid(row=4,column=0,sticky="WENS")
+        self.RecomendEntry.grid(row=4,column=1,columnspan=1,padx=5,pady=5,sticky="WENS")
+        
         #TODO
         # Back Button
         #This function should just generate an event that send the signal 
@@ -60,7 +66,7 @@ class CreatePostView(customtkinter.CTkFrame):
         #This should be used everywhere
         
         self.BackButton = customtkinter.CTkButton(self,text="Back")
-        self.BackButton.grid(row=4,column=1)
+        self.BackButton.grid(row=5,column=0)
         
     def CreatePost(self):
         postDate = datetime.now()
@@ -108,9 +114,12 @@ class CreatePostView(customtkinter.CTkFrame):
         content = self.ContentEntry.get(1.0,'end-1c')
         tags = self.TagsEntry.get().split(",")
         title=self.titleEntry.get()
+        recommendLink = self.RecomendEntry.get()
         editDict = {}
         if(self.Post.title != title):
             editDict["title"]= title
+        if(self.Post.recommendLink != recommendLink):
+            editDict["recommendLink"]= recommendLink
         if(self.Post.content != content):
             editDict["content"]= content
         if(self.Post.description != description):
@@ -151,17 +160,21 @@ class CreatePostView(customtkinter.CTkFrame):
         self.TagsEntry.delete(0,tkinter.END)
         self.DescriptionEntry.delete('1.0',tkinter.END)
         self.ContentEntry.delete('1.0',tkinter.END)
+        self.RecomendEntry.delete(0,tkinter.END)    
         if(post != None):
             self.titleEntry.insert(0,self.Post.title)
             self.TagsEntry.insert(0,self.Post.TagsToString())
             self.DescriptionEntry.insert('1.0',self.Post.description)
-            self.ContentEntry.insert('1.0',self.Post.content)
+            self.ContentEntry.insert('1.0',self.Post.content)            
+            if(self.Post.recommendLink != None):
+                logging.info("No Reccomended Link - Will not set ")
+                self.RecomendEntry.insert(0,self.Post.recommendLink)
             self.Mode = "Edit"
             self.CreateButton.grid_remove()                
-            self.EditButton.grid(row=4,column=0)
+            self.EditButton.grid(row=5,column=1)
         else:            
             self.Mode = "Create"
             self.EditButton.grid_remove()
-            self.CreateButton.grid(row=4,column=0)  
+            self.CreateButton.grid(row=5,column=1)  
 
 
