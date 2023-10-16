@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import List
 from bson import ObjectId
+from typing import Optional
 
 class Post(BaseModel):
         id: str = Field(..., alias="_id")
@@ -12,6 +13,7 @@ class Post(BaseModel):
         postDate: datetime  = Field(...)
         comments: List[str]  = Field(...)
         likes: List[str]  = Field(...)
+        recommendLink: Optional[str] = None
         
         def TagsToString(self):
             return ",".join(self.tags)

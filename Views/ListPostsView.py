@@ -27,7 +27,8 @@ class ListPostsView(customtkinter.CTkFrame):
         self.rowconfigure(1,weight=10) 
         self.columnconfigure(0,weight=1)          
         self.columnconfigure(1,weight=1)                 
-        self.columnconfigure(2,weight=1) 
+        self.columnconfigure(2,weight=1)               
+        self.columnconfigure(3,weight=1) 
          
         #Will need to add Frame here that contains Buttons for Editing and deleting selected posts
         self.EditButton = customtkinter.CTkButton(self,text="Edit",command=self.EditPost)
@@ -35,8 +36,12 @@ class ListPostsView(customtkinter.CTkFrame):
         self.DeleteButton = customtkinter.CTkButton(self,text="Delete",command=self.DeletePost)
         self.DeleteButton.grid(row=0,column=1)
         
+        self.CopyButton = customtkinter.CTkButton(self,text="CopyID",command=self.CopyID)
+        self.CopyButton.grid(row=0,column=2)
+        
         self.RefreshButton = customtkinter.CTkButton(self,text="Refresh",command=self.RefreshData)
-        self.RefreshButton.grid(row=0,column=2)
+        self.RefreshButton.grid(row=0,column=3)
+        
         
         #This will need to be put into a view class so that it can handle list of posts.
         self.postTable = ttk.Treeview(self)
@@ -49,7 +54,7 @@ class ListPostsView(customtkinter.CTkFrame):
         self.postTable.heading("Tags",text="Tags",anchor="center")
         self.postTable.column("PostDate",anchor="center")
         self.postTable.heading("PostDate",text="PostDate",anchor="center")
-        self.postTable.grid(row=1,column=0,columnspan=3,sticky="WENS")
+        self.postTable.grid(row=1,column=0,columnspan=4,sticky="WENS")
         
     def EditPost(self):
         selectedPost = self.postTable.focus()
@@ -81,6 +86,12 @@ class ListPostsView(customtkinter.CTkFrame):
             logging.error(e)
         return
         
+    def CopyID(self):   
+        select = self.postTable.focus()
+        self.clipboard_clear()
+        self.clipboard_append(select)
+        return
+    
     def RefreshData(self):        
         for child in self.postTable.get_children():
             self.postTable.delete(child)        
